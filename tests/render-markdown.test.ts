@@ -33,7 +33,27 @@ describe("renderDesignDescription", () => {
     expect(markdown).toContain("# Design Direction");
     expect(markdown).toContain("## Context");
     expect(markdown).toContain("Product type: E-commerce storefront");
-    expect(markdown).toContain("Era: Victorian + Cyberpunk");
+    for (const line of [
+      "Era: Victorian + Cyberpunk",
+      "Style: Editorial",
+      "Mood: Ominous",
+      "Palette: Charcoal and acid green",
+      "Typography: Condensed grotesk",
+      "Shape language: Sharp angular geometry",
+      "Texture: CRT scanlines",
+      "Density: Balanced",
+      "Layout: Asymmetric editorial grid",
+      "Imagery: Technical diagrams",
+      "Motion: Glitch bursts",
+      "Tone: Experimental",
+      "Contrast: Neon-on-dark contrast",
+      "Border treatment: Glowing neon outlines",
+      "Lighting: Neon bloom",
+      "Material: Chrome",
+      "Signature detail: Giant section numbers + Terminal cursor",
+    ]) {
+      expect(markdown).toContain(line);
+    }
     expect(markdown).toContain("Avoid Generic SaaS gradients");
     expect(markdown).toContain("## Frontend Design Prompt");
   });

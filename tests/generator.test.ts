@@ -27,8 +27,11 @@ describe("generateDesignProfile", () => {
   });
 
   it("uses config default when compatibility is absent", () => {
-    const profile = generateDesignProfile({ random: () => 0.5 });
-    expect(profile.era.length).toBeGreaterThan(0);
+    const implicit = generateDesignProfile({ random: () => 0.5 });
+    const explicit = generateDesignProfile({ compatibility: true, random: () => 0.5 });
+    const chaos = generateDesignProfile({ compatibility: false, random: () => 0.5 });
+    expect(implicit).toEqual(explicit);
+    expect(implicit).not.toEqual(chaos);
   });
 
   it("supports full-chaos selection when compatibility is false", () => {

@@ -10,7 +10,7 @@ const candidates: CatalogItem[] = [
 
 describe("selectDistinct", () => {
   it("uses uniform ordering when compatibility is disabled", () => {
-    const result = selectDistinct(candidates, 2, [], false, () => 0);
+    const result = selectDistinct(candidates, 2, ["digital"], false, () => 0);
     expect(result.map(({ value }) => value)).toEqual(["Clean", "Dark"]);
   });
 
