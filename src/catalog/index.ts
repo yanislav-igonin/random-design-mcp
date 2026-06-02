@@ -1,5 +1,23 @@
 import type { CatalogRegistry, CategoryName } from "../types.js";
 import { categoryNames } from "../types.js";
+import { antiPatterns } from "./anti-patterns.js";
+import { borderTreatments } from "./border-treatments.js";
+import { contrasts } from "./contrasts.js";
+import { densities } from "./densities.js";
+import { eras } from "./eras.js";
+import { imagery } from "./imagery.js";
+import { layouts } from "./layouts.js";
+import { lighting } from "./lighting.js";
+import { materials } from "./materials.js";
+import { moods } from "./moods.js";
+import { motion } from "./motion.js";
+import { palettes } from "./palettes.js";
+import { shapeLanguages } from "./shape-languages.js";
+import { signatureDetails } from "./signature-details.js";
+import { styles } from "./styles.js";
+import { textures } from "./textures.js";
+import { tones } from "./tones.js";
+import { typography } from "./typography.js";
 
 export const minimumCatalogSizes: Record<CategoryName, number> = {
   era: 40,
@@ -41,3 +59,24 @@ export function validateCatalogs(catalogs: CatalogRegistry): void {
     }
   }
 }
+
+export const catalogs: CatalogRegistry = {
+  era: eras,
+  style: styles,
+  mood: moods,
+  palette: palettes,
+  typography,
+  shapeLanguage: shapeLanguages,
+  texture: textures,
+  density: densities,
+  layout: layouts,
+  imagery,
+  motion,
+  tone: tones,
+  contrast: contrasts,
+  borderTreatment: borderTreatments,
+  lighting,
+  material: materials,
+  signatureDetail: signatureDetails,
+  antiPattern: antiPatterns,
+};

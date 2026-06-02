@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { validateCatalogs } from "../src/catalog/index.js";
-import type { CatalogRegistry } from "../src/types.js";
+import { catalogs, validateCatalogs } from "../src/catalog/index.js";
+import { categoryNames, type CatalogRegistry } from "../src/types.js";
 
 const validItem = { value: "Example", tags: ["clean"] as const };
 
@@ -26,4 +26,9 @@ describe("validateCatalogs", () => {
       } as unknown as CatalogRegistry),
     ).toThrow("Catalog era contains an item with empty text");
   });
+});
+
+it("ships valid catalogs for every required category", () => {
+  expect(() => validateCatalogs(catalogs)).not.toThrow();
+  expect(Object.keys(catalogs).sort()).toEqual([...categoryNames].sort());
 });
