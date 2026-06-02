@@ -53,7 +53,14 @@ describe("generateDesignProfile", () => {
   it("rejects invalid compatibility tag weights", () => {
     generatorConfig.compatibilityTagWeight = Number.NaN;
     expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
-      "Generator config compatibilityTagWeight must be a finite non-negative number",
+      "Generator config compatibilityTagWeight must be a finite positive number",
+    );
+  });
+
+  it("rejects zero compatibility tag weights", () => {
+    generatorConfig.compatibilityTagWeight = 0;
+    expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
+      "Generator config compatibilityTagWeight must be a finite positive number",
     );
   });
 });
