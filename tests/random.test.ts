@@ -19,6 +19,17 @@ describe("selectDistinct", () => {
     expect(result.map(({ value }) => value)).toEqual(["Digital"]);
   });
 
+  it("uses earlier selections as compatibility tags within the same batch", () => {
+    const batchCandidates: CatalogItem[] = [
+      { value: "Clean A", tags: ["clean"] },
+      { value: "Dark", tags: ["dark"] },
+      { value: "Clean B", tags: ["clean"] },
+    ];
+    const randomValues = [0, 0.4];
+    const result = selectDistinct(batchCandidates, 2, [], true, () => randomValues.shift() ?? 0);
+    expect(result.map(({ value }) => value)).toEqual(["Clean A", "Clean B"]);
+  });
+
   it("never returns the same item twice", () => {
     const result = selectDistinct(candidates, 3, [], false, () => 0);
     expect(new Set(result.map(({ value }) => value)).size).toBe(3);

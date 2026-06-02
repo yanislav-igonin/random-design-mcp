@@ -33,14 +33,16 @@ export function selectDistinct(
 
   const remaining = [...catalog];
   const selected: CatalogItem[] = [];
+  const selectionTags = [...activeTags];
   while (selected.length < count) {
     const weights = remaining.map((candidate) => {
       if (!compatibility) return 1;
-      const matches = candidate.tags.filter((tag) => activeTags.includes(tag)).length;
+      const matches = candidate.tags.filter((tag) => selectionTags.includes(tag)).length;
       return 1 + matches * generatorConfig.compatibilityTagWeight;
     });
     const chosen = chooseWeighted(remaining, weights, random);
     selected.push(chosen);
+    selectionTags.push(...chosen.tags);
     remaining.splice(remaining.indexOf(chosen), 1);
   }
   return selected;
