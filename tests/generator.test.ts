@@ -1,5 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import { generatorConfig } from "../src/config.js";
 import { generateDesignProfile } from "../src/generator.js";
+
+const initialGeneratorConfig = { ...generatorConfig };
+
+afterEach(() => {
+  Object.assign(generatorConfig, initialGeneratorConfig);
+});
 
 describe("generateDesignProfile", () => {
   it("creates every profile field", () => {
@@ -31,5 +38,19 @@ describe("generateDesignProfile", () => {
 
   it("validates catalogs before selecting", () => {
     expect(() => generateDesignProfile({ random: () => 0.5 })).not.toThrow();
+  });
+
+  it("rejects out-of-range blend probabilities", () => {
+    generatorConfig.secondEraProbability = 1.1;
+    expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
+      "Generator config secondEraProbability must be between 0 and 1",
+    );
+  });
+
+  it("rejects invalid compatibility tag weights", () => {
+    generatorConfig.compatibilityTagWeight = Number.NaN;
+    expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
+      "Generator config compatibilityTagWeight must be a finite non-negative number",
+    );
   });
 });

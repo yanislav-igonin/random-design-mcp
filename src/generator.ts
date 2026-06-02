@@ -1,5 +1,5 @@
 import { catalogs, validateCatalogs } from "./catalog/index.js";
-import { generatorConfig } from "./config.js";
+import { generatorConfig, validateGeneratorConfig } from "./config.js";
 import { defaultRandom, selectDistinct, type RandomSource } from "./random.js";
 import type { CatalogItem, DesignProfile, DesignTag } from "./types.js";
 
@@ -12,6 +12,7 @@ export function generateDesignProfile({
   compatibility = generatorConfig.compatibilityDefault,
   random = defaultRandom,
 }: GeneratorOptions = {}): DesignProfile {
+  validateGeneratorConfig(generatorConfig);
   validateCatalogs(catalogs);
   const activeTags: DesignTag[] = [];
 
