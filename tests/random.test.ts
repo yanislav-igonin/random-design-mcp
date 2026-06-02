@@ -1,6 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import { generatorConfig } from "../src/config.js";
 import { selectDistinct } from "../src/random.js";
 import type { CatalogItem } from "../src/types.js";
+
+const initialCompatibilityTagWeight = generatorConfig.compatibilityTagWeight;
+
+afterEach(() => {
+  generatorConfig.compatibilityTagWeight = initialCompatibilityTagWeight;
+});
 
 const candidates: CatalogItem[] = [
   { value: "Clean", tags: ["clean"] },
@@ -33,6 +40,12 @@ describe("selectDistinct", () => {
   it("never returns the same item twice", () => {
     const result = selectDistinct(candidates, 3, [], false, () => 0);
     expect(new Set(result.map(({ value }) => value)).size).toBe(3);
+  });
+
+  it("handles large finite compatibility weights without overflow", () => {
+    generatorConfig.compatibilityTagWeight = Number.MAX_VALUE;
+    const result = selectDistinct(candidates, 1, ["clean", "digital"], true, () => 0.1);
+    expect(result.map(({ value }) => value)).toEqual(["Clean"]);
   });
 
   it("rejects impossible selection counts", () => {
