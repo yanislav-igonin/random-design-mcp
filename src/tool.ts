@@ -52,7 +52,7 @@ export function createServer(): McpServer {
         "Infer optional productType, audience, and priority context from the user's request " +
         "and pass those fields in English. Set compatibility to false only when the user " +
         "explicitly wants unconstrained chaotic combinations.",
-      inputSchema: generateDesignDescriptionInputSchema.shape,
+      inputSchema: generateDesignDescriptionInputSchema,
     },
     async (input) => handleGenerateDesignDescription(input),
   );
