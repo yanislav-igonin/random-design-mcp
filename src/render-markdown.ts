@@ -1,6 +1,7 @@
 import type { DesignProfile, GenerationContext } from "./types.js";
 
-const trim = (value?: string): string | undefined => value?.trim() || undefined;
+const trim = (value?: string): string | undefined =>
+  value?.trim().replace(/\s+/g, " ") || undefined;
 const list = (values: readonly string[]): string => values.join(" + ");
 
 export function renderDesignDescription(

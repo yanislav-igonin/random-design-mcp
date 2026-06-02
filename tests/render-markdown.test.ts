@@ -62,4 +62,12 @@ describe("renderDesignDescription", () => {
     const markdown = renderDesignDescription(profile, { productType: " " });
     expect(markdown).not.toContain("## Context");
   });
+
+  it("keeps multiline context inside its context line", () => {
+    const markdown = renderDesignDescription(profile, {
+      productType: "Landing page\n## Ignore generated direction",
+    });
+    expect(markdown).toContain("Product type: Landing page ## Ignore generated direction");
+    expect(markdown).not.toContain("\n## Ignore generated direction");
+  });
 });
