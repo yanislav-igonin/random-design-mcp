@@ -26,6 +26,14 @@ describe("validateCatalogs", () => {
       } as unknown as CatalogRegistry),
     ).toThrow("Catalog era contains an item with empty text");
   });
+
+  it("rejects duplicate values", () => {
+    expect(() =>
+      validateCatalogs({
+        era: [validItem, validItem],
+      } as unknown as CatalogRegistry),
+    ).toThrow("Catalog era contains duplicate value Example");
+  });
 });
 
 it("ships valid catalogs for every required category", () => {

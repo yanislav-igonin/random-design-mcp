@@ -44,8 +44,10 @@ export function validateCatalogs(catalogs: CatalogRegistry): void {
   for (const category of categoryNames) {
     const catalog = catalogs[category] ?? [];
     const minimum = minimumCatalogSizes[category];
+    const values = new Set<string>();
     for (const catalogItem of catalog) {
-      if (!catalogItem.value.trim()) {
+      const value = catalogItem.value.trim();
+      if (!value) {
         throw new Error(`Catalog ${category} contains an item with empty text`);
       }
       if (catalogItem.tags.length === 0) {
@@ -53,6 +55,10 @@ export function validateCatalogs(catalogs: CatalogRegistry): void {
           `Catalog ${category} item ${catalogItem.value} must include at least one tag`,
         );
       }
+      if (values.has(value)) {
+        throw new Error(`Catalog ${category} contains duplicate value ${value}`);
+      }
+      values.add(value);
     }
     if (catalog.length < minimum) {
       throw new Error(`Catalog ${category} must contain at least ${minimum} items`);
