@@ -28,6 +28,19 @@ Configure a local MCP client to spawn the built stdio server:
 }
 ```
 
+After npm publication, clients can spawn the package with:
+
+```json
+{
+  "mcpServers": {
+    "random-design": {
+      "command": "npx",
+      "args": ["-y", "random-design-mcp"]
+    }
+  }
+}
+```
+
 ## Tool
 
 `generate_design_description` accepts optional free-text English context:
@@ -64,3 +77,36 @@ RANDOM_DESIGN_PRIORITY="Conversion" \
 RANDOM_DESIGN_COMPATIBILITY=false \
 npm run dev
 ```
+
+## Publishing
+
+This package is prepared for npm and the MCP Registry:
+
+- npm package: `random-design-mcp`
+- MCP Registry name: `io.github.yanislav-igonin/random-design-mcp`
+- Registry metadata: `server.json`
+
+Manual first publish:
+
+```bash
+npm adduser
+npm run check
+npm pack --dry-run
+npm publish --access public
+mcp-publisher login github
+mcp-publisher publish
+```
+
+Automated publish runs from `.github/workflows/publish.yml` when a version tag is
+pushed:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Required GitHub secret:
+
+- `NPM_TOKEN`: npm automation token allowed to publish `random-design-mcp`
+
+MCP Registry publishing uses GitHub OIDC, so no MCP registry secret is required.

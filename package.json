@@ -1,9 +1,34 @@
 {
   "name": "random-design-mcp",
   "version": "0.1.0",
-  "private": true,
+  "description": "Local MCP server that generates randomized frontend design directions.",
+  "license": "MIT",
+  "mcpName": "io.github.yanislav-igonin/random-design-mcp",
   "type": "module",
   "main": "dist/src/index.js",
+  "bin": {
+    "random-design-mcp": "dist/src/index.js"
+  },
+  "files": [
+    "dist/src/",
+    "README.md",
+    "server.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanislav-igonin/random-design-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yanislav-igonin/random-design-mcp/issues"
+  },
+  "homepage": "https://github.com/yanislav-igonin/random-design-mcp#readme",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "design",
+    "frontend-design",
+    "stdio"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "npm run build --silent && node dist/src/dev.js",

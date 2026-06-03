@@ -1,0 +1,21 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.yanislav-igonin/random-design-mcp",
+  "title": "Random Design",
+  "description": "Generate randomized English Markdown frontend design directions from curated catalogs.",
+  "repository": {
+    "url": "https://github.com/yanislav-igonin/random-design-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "random-design-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
