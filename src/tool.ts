@@ -42,7 +42,7 @@ export function handleGenerateDesignDescription(
 }
 
 export function createServer(): McpServer {
-  const server = new McpServer({ name: "random-design-mcp", version: "0.1.0" });
+  const server = new McpServer({ name: "random-design-mcp", version: "1.0.0" });
   server.registerTool(
     "generate_design_description",
     {
