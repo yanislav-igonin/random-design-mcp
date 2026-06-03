@@ -5,12 +5,12 @@
   "license": "MIT",
   "mcpName": "io.github.yanislav-igonin/random-design-mcp",
   "type": "module",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "bin": {
-    "random-design-mcp": "dist/src/index.js"
+    "random-design-mcp": "dist/index.js"
   },
   "files": [
-    "dist/src/",
+    "dist/",
     "README.md",
     "server.json"
   ],
@@ -30,8 +30,9 @@
     "stdio"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "dev": "npm run build --silent && node dist/src/dev.js",
+    "build": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
+    "dev": "npm run build --silent && node dist/dev.js",
+    "prepack": "npm run build",
     "test": "vitest run",
     "check": "npm run build && npm test"
   },

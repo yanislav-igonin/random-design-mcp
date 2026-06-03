@@ -21,7 +21,7 @@ Configure a local MCP client to spawn the built stdio server:
     "random-design": {
       "command": "node",
       "args": [
-        "/Users/h0b0/Documents/private/random-design-mcp/dist/src/index.js"
+        "/Users/h0b0/Documents/private/random-design-mcp/dist/index.js"
       ]
     }
   }

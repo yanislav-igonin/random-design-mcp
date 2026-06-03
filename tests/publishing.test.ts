@@ -39,12 +39,12 @@ describe("publishing metadata", () => {
   });
 
   it("publishes only runtime package files", () => {
-    expect(packageJson.main).toBe("dist/src/index.js");
+    expect(packageJson.main).toBe("dist/index.js");
     expect(packageJson.bin).toEqual({
-      "random-design-mcp": "dist/src/index.js",
+      "random-design-mcp": "dist/index.js",
     });
     expect(packageJson.files).toEqual([
-      "dist/src/",
+      "dist/",
       "README.md",
       "server.json",
     ]);
