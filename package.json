@@ -6,6 +6,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "dev": "npm run build --silent && node dist/src/dev.js",
     "test": "vitest run",
     "check": "npm run build && npm test"
   },

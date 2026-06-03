@@ -48,3 +48,19 @@ Set `compatibility: false` for unconstrained random combinations.
 ```bash
 npm run check
 ```
+
+Preview one generated design direction locally:
+
+```bash
+npm run dev
+```
+
+Optional preview context:
+
+```bash
+RANDOM_DESIGN_PRODUCT_TYPE="Landing page" \
+RANDOM_DESIGN_AUDIENCE="Developers" \
+RANDOM_DESIGN_PRIORITY="Conversion" \
+RANDOM_DESIGN_COMPATIBILITY=false \
+npm run dev
+```
