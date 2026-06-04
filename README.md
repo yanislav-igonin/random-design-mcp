@@ -23,7 +23,9 @@ Use the published npm package from any MCP client that supports stdio servers:
 
 ## Tool
 
-`generate_design_description` accepts optional free-text English context:
+`generate_design_description` returns one randomized Markdown design direction.
+All input fields are optional, but passing context makes the result easier to
+use:
 
 ```ts
 {
@@ -34,7 +36,17 @@ Use the published npm package from any MCP client that supports stdio servers:
 }
 ```
 
-Set `compatibility: false` for unconstrained random combinations.
+- `productType`: what you are designing, such as `landing page`, `dashboard`,
+  `mobile app`, or `pricing page`.
+- `audience`: who the interface is for, such as `developers`, `founders`, or
+  `enterprise buyers`.
+- `priority`: what the design should optimize for or pay extra attention to,
+  such as `conversion`, `readability`, `premium feel`, `dense data display`, or
+  `playful experimentation`.
+- `compatibility`: controls how wild the random combination can be. It defaults
+  to `true`, which keeps generated parameters more coherent and practical. Set
+  it to `false` for unconstrained combinations that can intentionally mix
+  clashing eras, styles, palettes, layouts, and materials.
 
 ## Development
 
@@ -59,36 +71,3 @@ RANDOM_DESIGN_PRIORITY="Conversion" \
 RANDOM_DESIGN_COMPATIBILITY=false \
 npm run dev
 ```
-
-## Publishing
-
-This package is prepared for npm and the MCP Registry:
-
-- npm package: `random-design-mcp`
-- MCP Registry name: `io.github.yanislav-igonin/random-design-mcp`
-- Registry metadata: `server.json`
-
-Manual first publish:
-
-```bash
-npm adduser
-npm run check
-npm pack --dry-run
-npm publish --access public
-mcp-publisher login github
-mcp-publisher publish
-```
-
-Automated publish runs from `.github/workflows/publish.yml` when a version tag is
-pushed:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-Required GitHub secret:
-
-- `NPM_TOKEN`: npm automation token allowed to publish `random-design-mcp`
-
-MCP Registry publishing uses GitHub OIDC, so no MCP registry secret is required.
