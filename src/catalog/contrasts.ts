@@ -1,7 +1,7 @@
 import { item } from "./catalog-item.js";
 
 export const contrasts = [
-  item("Low contrast", "soft", "minimal"),
+  item("Accessible soft contrast", "soft", "minimal"),
   item("Medium contrast", "clean", "editorial"),
   item("High contrast", "sharp", "clean"),
   item("Extreme black-white contrast", "sharp", "minimal"),

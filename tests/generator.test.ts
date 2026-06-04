@@ -18,10 +18,10 @@ describe("generateDesignProfile", () => {
     ].sort());
   });
 
-  it("selects optional second values when random falls below probabilities", () => {
+  it("keeps era and style to one anchor while allowing optional second signature detail", () => {
     const profile = generateDesignProfile({ random: () => 0 });
-    expect(profile.era).toHaveLength(2);
-    expect(profile.style).toHaveLength(2);
+    expect(profile.era).toHaveLength(1);
+    expect(profile.style).toHaveLength(1);
     expect(profile.signatureDetail).toHaveLength(2);
     expect(profile.antiPattern).toHaveLength(2);
   });
@@ -44,9 +44,9 @@ describe("generateDesignProfile", () => {
   });
 
   it("rejects out-of-range blend probabilities", () => {
-    generatorConfig.secondEraProbability = 1.1;
+    generatorConfig.secondSignatureDetailProbability = 1.1;
     expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
-      "Generator config secondEraProbability must be between 0 and 1",
+      "Generator config secondSignatureDetailProbability must be between 0 and 1",
     );
   });
 

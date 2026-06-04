@@ -1,14 +1,14 @@
 import { item } from "./catalog-item.js";
 
 export const imagery = [
-  item("No imagery", "minimal", "sparse"),
-  item("Documentary photography", "editorial", "serious"),
+  item("Typography-only visual system", "minimal", "sparse"),
+  item("Documentary photography of real usage", "editorial", "serious"),
   item("Studio product photography", "clean", "luxury"),
   item("Monochrome photography", "editorial", "serious"),
   item("Duotone photography", "editorial", "playful"),
   item("3D chrome objects", "futuristic", "clean"),
   item("3D clay objects", "soft", "playful"),
-  item("Abstract gradients", "digital", "soft"),
+  item("Purposeful atmospheric color fields", "digital", "soft"),
   item("Technical diagrams", "industrial", "digital"),
   item("Blueprint illustrations", "industrial", "digital"),
   item("Line art", "clean", "minimal"),
@@ -18,7 +18,12 @@ export const imagery = [
   item("Botanical illustrations", "organic", "historic"),
   item("Architectural renders", "industrial", "clean"),
   item("Isometric scenes", "digital", "playful"),
-  item("Generative particles", "digital", "futuristic"),
+  item("Sparse data-reactive particle field", "digital", "futuristic"),
   item("Geometric icons", "clean", "sharp"),
   item("Oversized typography as imagery", "editorial", "maximal"),
+  item("Annotated product screenshots", "digital", "clean"),
+  item("Cropped UI fragments", "digital", "editorial"),
+  item("Operational maps", "digital", "dense"),
+  item("Material macro photography", "organic", "textured"),
+  item("Exploded product diagrams", "industrial", "digital"),
 ] as const;

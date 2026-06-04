@@ -26,8 +26,8 @@ export function generateDesignProfile({
   const optionalCount = (probability: number): number => random() < probability ? 2 : 1;
 
   return {
-    era: values(select("era", optionalCount(generatorConfig.secondEraProbability))),
-    style: values(select("style", optionalCount(generatorConfig.secondStyleProbability))),
+    era: values(select("era")),
+    style: values(select("style")),
     mood: value("mood"),
     palette: value("palette"),
     typography: value("typography"),
