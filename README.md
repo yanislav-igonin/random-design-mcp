@@ -1,34 +1,14 @@
 # Random Design MCP
 
-Local TypeScript MCP server that returns randomized English Markdown frontend
-design directions. It uses curated catalogs and optional soft compatibility
-scoring. It does not call an LLM.
+TypeScript MCP server that returns randomized English Markdown frontend design
+directions. It uses curated catalogs and optional soft compatibility scoring. It
+does not call an LLM.
+
+Website: https://random-design-mcp.h0b0.dev
 
 ## Install
 
-```bash
-npm install
-npm run build
-```
-
-## MCP Configuration
-
-Configure a local MCP client to spawn the built stdio server:
-
-```json
-{
-  "mcpServers": {
-    "random-design": {
-      "command": "node",
-      "args": [
-        "/Users/h0b0/Documents/private/random-design-mcp/dist/index.js"
-      ]
-    }
-  }
-}
-```
-
-After npm publication, clients can spawn the package with:
+Use the published npm package from any MCP client that supports stdio servers:
 
 ```json
 {
@@ -59,6 +39,8 @@ Set `compatibility: false` for unconstrained random combinations.
 ## Development
 
 ```bash
+npm install
+npm run build
 npm run check
 ```
 
