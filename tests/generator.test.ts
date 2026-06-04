@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { generatorConfig } from "../src/config.js";
-import { generateDesignProfile } from "../src/generator.js";
+import { generateDesignProfile, selectRiskBalancedAntiPatterns } from "../src/generator.js";
+import type { CatalogItem } from "../src/types.js";
 
 const initialGeneratorConfig = { ...generatorConfig };
 
@@ -62,5 +63,24 @@ describe("generateDesignProfile", () => {
     expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
       "Generator config compatibilityTagWeight must be a finite positive number",
     );
+  });
+});
+
+describe("selectRiskBalancedAntiPatterns", () => {
+  it("selects one relevant risk and one neutral risk", () => {
+    const antiPatterns: CatalogItem[] = [
+      { value: "General A", tags: ["clean"] },
+      { value: "General B", tags: ["dark"] },
+      { value: "Specific A", tags: ["digital", "soft"] },
+      { value: "Specific B", tags: ["digital"] },
+    ];
+    const randomValues = [0.65, 0.5];
+    const result = selectRiskBalancedAntiPatterns(
+      antiPatterns,
+      ["digital", "soft"],
+      true,
+      () => randomValues.shift() ?? 0,
+    );
+    expect(result.map(({ value }) => value)).toEqual(["Specific A", "General B"]);
   });
 });

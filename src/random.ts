@@ -40,7 +40,8 @@ export function selectDistinct(
     const weights = remaining.map((candidate) => {
       if (!compatibility) return 1;
       const matches = candidate.tags.filter((tag) => selectionTags.includes(tag)).length;
-      return 1 / weightScale + matches * (tagWeight / weightScale);
+      const cappedMatches = Math.min(matches, generatorConfig.compatibilityMatchedTagCap);
+      return 1 / weightScale + cappedMatches * (tagWeight / weightScale);
     });
     const chosen = chooseWeighted(remaining, weights, random);
     selected.push(chosen);

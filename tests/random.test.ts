@@ -26,6 +26,21 @@ describe("selectDistinct", () => {
     expect(result.map(({ value }) => value)).toEqual(["Digital"]);
   });
 
+  it("caps matched tags so broad candidates do not dominate", () => {
+    const broadCandidates: CatalogItem[] = [
+      { value: "Triple match", tags: ["digital", "clean", "editorial"] },
+      { value: "Double match", tags: ["digital", "clean"] },
+    ];
+    const result = selectDistinct(
+      broadCandidates,
+      1,
+      ["digital", "clean", "editorial"],
+      true,
+      () => 0.55,
+    );
+    expect(result.map(({ value }) => value)).toEqual(["Double match"]);
+  });
+
   it("uses earlier selections as compatibility tags within the same batch", () => {
     const batchCandidates: CatalogItem[] = [
       { value: "Clean A", tags: ["clean"] },
