@@ -1,6 +1,6 @@
 {
   "name": "random-design-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server that generates randomized frontend design directions.",
   "license": "MIT",
   "mcpName": "io.github.yanislav-igonin/random-design-mcp",
