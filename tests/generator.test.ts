@@ -58,6 +58,13 @@ describe("generateDesignProfile", () => {
     );
   });
 
+  it("rejects invalid compatibility contradiction penalties", () => {
+    generatorConfig.compatibilityContradictionPenalty = -0.1;
+    expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
+      "Generator config compatibilityContradictionPenalty must be a finite non-negative number",
+    );
+  });
+
   it("rejects zero compatibility tag weights", () => {
     generatorConfig.compatibilityTagWeight = 0;
     expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(

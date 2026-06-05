@@ -2,6 +2,7 @@ export type GeneratorConfig = {
   compatibilityDefault: boolean;
   compatibilityTagWeight: number;
   compatibilityMatchedTagCap: number;
+  compatibilityContradictionPenalty: number;
   secondSignatureDetailProbability: number;
 };
 
@@ -9,6 +10,7 @@ export const generatorConfig: GeneratorConfig = {
   compatibilityDefault: true,
   compatibilityTagWeight: 2,
   compatibilityMatchedTagCap: 2,
+  compatibilityContradictionPenalty: 0.5,
   secondSignatureDetailProbability: 0.3,
 };
 
@@ -27,6 +29,14 @@ export function validateGeneratorConfig(config: GeneratorConfig): void {
   ) {
     throw new Error(
       "Generator config compatibilityMatchedTagCap must be a positive integer",
+    );
+  }
+  if (
+    !Number.isFinite(config.compatibilityContradictionPenalty) ||
+    config.compatibilityContradictionPenalty < 0
+  ) {
+    throw new Error(
+      "Generator config compatibilityContradictionPenalty must be a finite non-negative number",
     );
   }
   for (const name of ["secondSignatureDetailProbability"] as const) {

@@ -3,10 +3,10 @@ import { generatorConfig } from "../src/config.js";
 import { selectDistinct } from "../src/random.js";
 import type { CatalogItem } from "../src/types.js";
 
-const initialCompatibilityTagWeight = generatorConfig.compatibilityTagWeight;
+const initialGeneratorConfig = { ...generatorConfig };
 
 afterEach(() => {
-  generatorConfig.compatibilityTagWeight = initialCompatibilityTagWeight;
+  Object.assign(generatorConfig, initialGeneratorConfig);
 });
 
 const candidates: CatalogItem[] = [
@@ -76,6 +76,24 @@ describe("selectDistinct", () => {
     generatorConfig.compatibilityTagWeight = Number.MAX_VALUE;
     const result = selectDistinct(candidates, 1, ["clean", "digital"], true, () => 0.1);
     expect(result.map(({ value }) => value)).toEqual(["Clean"]);
+  });
+
+  it("penalizes contradictory candidates without banning them", () => {
+    generatorConfig.compatibilityContradictionPenalty = 0.5;
+    const contradictionCandidates: CatalogItem[] = [
+      { value: "Contradictory digital", tags: ["digital", "maximal"] },
+      { value: "Aligned digital", tags: ["digital", "clean"] },
+    ];
+
+    const result = selectDistinct(
+      contradictionCandidates,
+      1,
+      ["digital", "minimal"],
+      true,
+      () => 0.41,
+    );
+
+    expect(result.map(({ value }) => value)).toEqual(["Aligned digital"]);
   });
 
   it("rejects impossible selection counts", () => {

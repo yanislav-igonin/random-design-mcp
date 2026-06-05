@@ -41,7 +41,7 @@ export function selectDistinct(
       return scoreCompatibility(candidate.tags, selectionTags, {
         tagWeight: generatorConfig.compatibilityTagWeight,
         matchedTagCap: generatorConfig.compatibilityMatchedTagCap,
-        contradictionPenalty: 0,
+        contradictionPenalty: generatorConfig.compatibilityContradictionPenalty,
       });
     });
     const chosen = chooseWeighted(remaining, weights, random);
