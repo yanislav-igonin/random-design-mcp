@@ -61,7 +61,8 @@ Do not use deprecated Codex models for this plan.
   Completed: 2026-06-05. Verification: `npm test -- tests/tag-metadata.test.ts`, `npm run check`. Commit: not committed.
 - [x] Task 2: Add pure compatibility scoring helper
   Completed: 2026-06-05. Verification: `npm test -- tests/compatibility-scoring.test.ts`, `npm run check`. Commit: not committed.
-- [ ] Task 3: Integrate grouped scoring into selection
+- [x] Task 3: Integrate grouped scoring into selection
+  Completed: 2026-06-05. Verification: `npm test -- tests/random.test.ts tests/compatibility-scoring.test.ts`, `npm run check`. Commit: not committed.
 - [ ] Task 4: Add contradiction penalty tuning
 - [ ] Task 5: Run distribution and manual sample QA
 - [ ] Task 6: Add bridge/contrast handling only if QA proves it is needed

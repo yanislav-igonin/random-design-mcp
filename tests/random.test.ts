@@ -41,6 +41,21 @@ describe("selectDistinct", () => {
     expect(result.map(({ value }) => value)).toEqual(["Double match"]);
   });
 
+  it("counts matches once per tag group during compatibility scoring", () => {
+    const groupedCandidates: CatalogItem[] = [
+      { value: "Same group", tags: ["digital", "editorial"] },
+      { value: "Mixed group", tags: ["digital", "clean"] },
+    ];
+    const result = selectDistinct(
+      groupedCandidates,
+      1,
+      ["digital", "editorial"],
+      true,
+      () => 0.55,
+    );
+    expect(result.map(({ value }) => value)).toEqual(["Mixed group"]);
+  });
+
   it("uses earlier selections as compatibility tags within the same batch", () => {
     const batchCandidates: CatalogItem[] = [
       { value: "Clean A", tags: ["clean"] },
