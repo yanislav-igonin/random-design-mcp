@@ -1,11 +1,17 @@
+import { readFileSync } from "node:fs";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { describe, expect, it } from "vitest";
 import {
   createServer,
   generateDesignDescriptionInputSchema,
+  getVersion,
   handleGenerateDesignDescription,
 } from "../src/tool.js";
+
+const packageJson = JSON.parse(readFileSync("package.json", "utf8")) as {
+  version: string;
+};
 
 describe("generate_design_description tool", () => {
   it("accepts only documented optional arguments", () => {
@@ -60,14 +66,51 @@ describe("generate_design_description tool", () => {
 
     try {
       const { tools } = await client.listTools();
-      expect(tools).toHaveLength(1);
-      expect(tools[0].inputSchema).toMatchObject({ additionalProperties: false });
+      const designTool = tools.find((tool) =>
+        tool.name === "generate_design_description"
+      );
+      expect(designTool?.inputSchema).toMatchObject({
+        additionalProperties: false,
+      });
 
       const result = await client.callTool({
         name: "generate_design_description",
         arguments: { seed: 42 },
       });
       expect(result.isError).toBe(true);
+    } finally {
+      await client.close();
+      await server.close();
+    }
+  });
+});
+
+describe("get_version tool", () => {
+  it("returns the package.json version as text", () => {
+    expect(getVersion()).toBe(packageJson.version);
+  });
+
+  it("is registered at the MCP boundary with no arguments", async () => {
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const client = new Client({ name: "tool-test", version: "0.1.0" });
+    const server = createServer();
+    await server.connect(serverTransport);
+    await client.connect(clientTransport);
+
+    try {
+      const { tools } = await client.listTools();
+      expect(tools.map((tool) => tool.name)).toEqual([
+        "generate_design_description",
+        "get_version",
+      ]);
+
+      const result = await client.callTool({
+        name: "get_version",
+        arguments: {},
+      });
+      expect(result).toEqual({
+        content: [{ type: "text", text: packageJson.version }],
+      });
     } finally {
       await client.close();
       await server.close();

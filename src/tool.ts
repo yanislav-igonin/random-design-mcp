@@ -1,8 +1,13 @@
+import { readFileSync } from "node:fs";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { generateDesignProfile } from "./generator.js";
 import { renderDesignDescription } from "./render-markdown.js";
 import type { GenerationContext } from "./types.js";
+
+const packageJson = JSON.parse(
+  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+) as { version: string };
 
 export const generateDesignDescriptionInputSchema = z.strictObject({
   productType: z.string().optional(),
@@ -10,6 +15,7 @@ export const generateDesignDescriptionInputSchema = z.strictObject({
   priority: z.string().optional(),
   compatibility: z.boolean().optional(),
 });
+export const getVersionInputSchema = z.strictObject({});
 
 type GenerateInput = z.infer<typeof generateDesignDescriptionInputSchema>;
 type Generate = (input: GenerateInput) => string;
@@ -41,8 +47,21 @@ export function handleGenerateDesignDescription(
   }
 }
 
+export function getVersion(): string {
+  return packageJson.version;
+}
+
+export function handleGetVersion() {
+  return {
+    content: [{ type: "text" as const, text: getVersion() }],
+  };
+}
+
 export function createServer(): McpServer {
-  const server = new McpServer({ name: "random-design-mcp", version: "1.0.0" });
+  const server = new McpServer({
+    name: "random-design-mcp",
+    version: getVersion(),
+  });
   server.registerTool(
     "generate_design_description",
     {
@@ -55,6 +74,16 @@ export function createServer(): McpServer {
       inputSchema: generateDesignDescriptionInputSchema,
     },
     async (input) => handleGenerateDesignDescription(input),
+  );
+  server.registerTool(
+    "get_version",
+    {
+      title: "Get Version",
+      description:
+        "Return the random-design-mcp package version from package.json for debugging cache or publish state.",
+      inputSchema: getVersionInputSchema,
+    },
+    async () => handleGetVersion(),
   );
   return server;
 }

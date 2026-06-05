@@ -21,7 +21,7 @@ Use the published npm package from any MCP client that supports stdio servers:
 }
 ```
 
-## Tool
+## Tools
 
 `generate_design_description` returns one randomized Markdown design direction.
 All input fields are optional, but passing context makes the result easier to
@@ -47,6 +47,10 @@ use:
   to `true`, which keeps generated parameters more coherent and practical. Set
   it to `false` for unconstrained combinations that can intentionally mix
   clashing eras, styles, palettes, layouts, and materials.
+
+`get_version` takes no arguments and returns the package version from
+`package.json`. Use it to confirm which published or cached MCP package version
+an MCP client is running.
 
 ## Development
 
