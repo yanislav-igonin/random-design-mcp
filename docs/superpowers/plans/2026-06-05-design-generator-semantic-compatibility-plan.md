@@ -65,7 +65,8 @@ Do not use deprecated Codex models for this plan.
   Completed: 2026-06-05. Verification: `npm test -- tests/random.test.ts tests/compatibility-scoring.test.ts`, `npm run check`. Commit: not committed.
 - [x] Task 4: Add contradiction penalty tuning
   Completed: 2026-06-05. Verification: `npm test -- tests/random.test.ts tests/generator.test.ts tests/compatibility-scoring.test.ts`, `npm run check`. Commit: `d3f1ef8`.
-- [ ] Task 5: Run distribution and manual sample QA
+- [x] Task 5: Run distribution and manual sample QA
+  Completed: 2026-06-05. Verification: `npm run check`, `npm test -- tests/distribution.test.ts`. Commit: not committed.
 - [ ] Task 6: Add bridge/contrast handling only if QA proves it is needed
 
 ---
@@ -724,6 +725,25 @@ Mark Task 5 done in `## Status`.
 ---
 
 ## Task 6: Add Bridge/Contrast Handling Only If QA Proves It Is Needed
+
+### Task 5 QA Notes
+
+Completed: 2026-06-05. Verification: `npm run check`, `npm test -- tests/distribution.test.ts`. Commit: not committed.
+
+Manual sample result:
+- Strong samples: 3 out of 12.
+- Awkward but usable samples: 7 out of 12.
+- Bad samples: 2 out of 12.
+
+Observed issues:
+- Serious or trust-heavy products can receive overly expressive choices that need user priority to dominate more strongly, for example fintech onboarding with Punk zine and provocative tone.
+- Product-type mismatch still appears in some samples, for example restaurant booking with Terminal UI and warning labels despite a warm reservation-flow priority.
+- Density can conflict with priority, for example a dense analytics dashboard receiving single-focus composition, or a security product receiving extremely sparse density.
+- No recurring bridge/contrast contradiction problem was observed from the new contradiction penalty.
+
+Decision:
+- Proceed to Task 6: no.
+- Reason: manual samples showed contextual prioritization issues, not a need for bridge or contrast handling. Distribution and full checks passed, so no threshold or scoring change is justified in this task.
 
 **Purpose:** Preserve useful creative contrast if contradiction penalties make samples too flat or if samples still show awkward contrast that needs explicit framing.
 
