@@ -57,7 +57,8 @@ Do not use deprecated Codex models for this plan.
 
 ## Status
 
-- [ ] Task 1: Add tag metadata coverage
+- [x] Task 1: Add tag metadata coverage
+  Completed: 2026-06-05. Verification: `npm test -- tests/tag-metadata.test.ts`, `npm run check`. Commit: not committed.
 - [ ] Task 2: Add pure compatibility scoring helper
 - [ ] Task 3: Integrate grouped scoring into selection
 - [ ] Task 4: Add contradiction penalty tuning

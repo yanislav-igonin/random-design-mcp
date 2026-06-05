@@ -1,9 +1,12 @@
-export type DesignTag =
-  | "historic" | "retro" | "futuristic" | "digital" | "organic"
-  | "industrial" | "editorial" | "minimal" | "maximal" | "soft"
-  | "sharp" | "playful" | "serious" | "luxury" | "underground"
-  | "bright" | "dark" | "warm" | "cold" | "clean" | "textured"
-  | "dense" | "sparse";
+export const designTags = [
+  "historic", "retro", "futuristic", "digital", "organic",
+  "industrial", "editorial", "minimal", "maximal", "soft",
+  "sharp", "playful", "serious", "luxury", "underground",
+  "bright", "dark", "warm", "cold", "clean", "textured",
+  "dense", "sparse",
+] as const;
+
+export type DesignTag = (typeof designTags)[number];
 
 export type CatalogItem = {
   value: string;
