@@ -1,4 +1,5 @@
 import { generatorConfig } from "./config.js";
+import { scoreCompatibility } from "./compatibility-scoring.js";
 import type { CatalogItem, DesignTag } from "./types.js";
 
 export type RandomSource = () => number;
@@ -34,13 +35,14 @@ export function selectDistinct(
   const remaining = [...catalog];
   const selected: CatalogItem[] = [];
   const selectionTags = [...activeTags];
-  const tagWeight = generatorConfig.compatibilityTagWeight;
-  const weightScale = Math.max(1, tagWeight);
   while (selected.length < count) {
     const weights = remaining.map((candidate) => {
       if (!compatibility) return 1;
-      const matches = candidate.tags.filter((tag) => selectionTags.includes(tag)).length;
-      return 1 / weightScale + matches * (tagWeight / weightScale);
+      return scoreCompatibility(candidate.tags, selectionTags, {
+        tagWeight: generatorConfig.compatibilityTagWeight,
+        matchedTagCap: generatorConfig.compatibilityMatchedTagCap,
+        contradictionPenalty: generatorConfig.compatibilityContradictionPenalty,
+      });
     });
     const chosen = chooseWeighted(remaining, weights, random);
     selected.push(chosen);

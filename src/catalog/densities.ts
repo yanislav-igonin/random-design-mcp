@@ -19,6 +19,6 @@ export const densities = [
   item("Edge-to-edge", "maximal", "sharp"),
   item("Micro-detail rich", "dense", "textured"),
   item("Large-type dominant", "editorial", "sharp"),
-  item("Card-heavy", "digital", "dense"),
+  item("Modular content-dense without repetitive cards", "digital", "dense"),
   item("Content-first", "editorial", "serious"),
 ] as const;

@@ -16,9 +16,9 @@ export const textures = [
   item("Photocopier artifacts", "underground", "textured"),
   item("Ink bleed", "organic", "textured"),
   item("Plastic gloss", "playful", "clean"),
-  item("Holographic foil", "futuristic", "bright"),
+  item("Restrained holographic accent foil", "futuristic", "bright"),
   item("Fabric weave", "organic", "textured"),
   item("Blueprint grid", "industrial", "digital"),
   item("Dust and scratches", "retro", "textured"),
-  item("Subtle gradient mesh", "digital", "soft"),
+  item("Low-noise atmospheric gradient field", "digital", "soft"),
 ] as const;

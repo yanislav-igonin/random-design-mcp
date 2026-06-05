@@ -30,7 +30,7 @@ describe("dev preview", () => {
     });
     expect(markdown).toContain("# Design Direction");
     expect(markdown).toContain("Product type: Landing page");
-    expect(markdown).toContain("## Generated Parameters");
-    expect(markdown).toContain("## Frontend Design Prompt");
+    expect(markdown).toContain("## Core Concept");
+    expect(markdown).toContain("## Execution Rules");
   });
 });

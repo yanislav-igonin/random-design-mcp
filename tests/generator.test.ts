@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { generatorConfig } from "../src/config.js";
-import { generateDesignProfile } from "../src/generator.js";
+import { generateDesignProfile, selectRiskBalancedAntiPatterns } from "../src/generator.js";
+import type { CatalogItem } from "../src/types.js";
 
 const initialGeneratorConfig = { ...generatorConfig };
 
@@ -18,10 +19,10 @@ describe("generateDesignProfile", () => {
     ].sort());
   });
 
-  it("selects optional second values when random falls below probabilities", () => {
+  it("keeps era and style to one anchor while allowing optional second signature detail", () => {
     const profile = generateDesignProfile({ random: () => 0 });
-    expect(profile.era).toHaveLength(2);
-    expect(profile.style).toHaveLength(2);
+    expect(profile.era).toHaveLength(1);
+    expect(profile.style).toHaveLength(1);
     expect(profile.signatureDetail).toHaveLength(2);
     expect(profile.antiPattern).toHaveLength(2);
   });
@@ -44,9 +45,9 @@ describe("generateDesignProfile", () => {
   });
 
   it("rejects out-of-range blend probabilities", () => {
-    generatorConfig.secondEraProbability = 1.1;
+    generatorConfig.secondSignatureDetailProbability = 1.1;
     expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
-      "Generator config secondEraProbability must be between 0 and 1",
+      "Generator config secondSignatureDetailProbability must be between 0 and 1",
     );
   });
 
@@ -57,10 +58,36 @@ describe("generateDesignProfile", () => {
     );
   });
 
+  it("rejects invalid compatibility contradiction penalties", () => {
+    generatorConfig.compatibilityContradictionPenalty = -0.1;
+    expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
+      "Generator config compatibilityContradictionPenalty must be a finite non-negative number",
+    );
+  });
+
   it("rejects zero compatibility tag weights", () => {
     generatorConfig.compatibilityTagWeight = 0;
     expect(() => generateDesignProfile({ random: () => 0.5 })).toThrow(
       "Generator config compatibilityTagWeight must be a finite positive number",
     );
+  });
+});
+
+describe("selectRiskBalancedAntiPatterns", () => {
+  it("selects one relevant risk and one neutral risk", () => {
+    const antiPatterns: CatalogItem[] = [
+      { value: "General A", tags: ["clean"] },
+      { value: "General B", tags: ["dark"] },
+      { value: "Specific A", tags: ["digital", "soft"] },
+      { value: "Specific B", tags: ["digital"] },
+    ];
+    const randomValues = [0.65, 0.5];
+    const result = selectRiskBalancedAntiPatterns(
+      antiPatterns,
+      ["digital", "soft"],
+      true,
+      () => randomValues.shift() ?? 0,
+    );
+    expect(result.map(({ value }) => value)).toEqual(["Specific A", "General B"]);
   });
 });

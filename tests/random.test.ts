@@ -3,10 +3,10 @@ import { generatorConfig } from "../src/config.js";
 import { selectDistinct } from "../src/random.js";
 import type { CatalogItem } from "../src/types.js";
 
-const initialCompatibilityTagWeight = generatorConfig.compatibilityTagWeight;
+const initialGeneratorConfig = { ...generatorConfig };
 
 afterEach(() => {
-  generatorConfig.compatibilityTagWeight = initialCompatibilityTagWeight;
+  Object.assign(generatorConfig, initialGeneratorConfig);
 });
 
 const candidates: CatalogItem[] = [
@@ -24,6 +24,36 @@ describe("selectDistinct", () => {
   it("increases weight for matching tags when compatibility is enabled", () => {
     const result = selectDistinct(candidates, 1, ["digital"], true, () => 0.8);
     expect(result.map(({ value }) => value)).toEqual(["Digital"]);
+  });
+
+  it("caps matched tags so broad candidates do not dominate", () => {
+    const broadCandidates: CatalogItem[] = [
+      { value: "Triple match", tags: ["digital", "clean", "editorial"] },
+      { value: "Double match", tags: ["digital", "clean"] },
+    ];
+    const result = selectDistinct(
+      broadCandidates,
+      1,
+      ["digital", "clean", "editorial"],
+      true,
+      () => 0.55,
+    );
+    expect(result.map(({ value }) => value)).toEqual(["Double match"]);
+  });
+
+  it("counts matches once per tag group during compatibility scoring", () => {
+    const groupedCandidates: CatalogItem[] = [
+      { value: "Same group", tags: ["digital", "editorial"] },
+      { value: "Mixed group", tags: ["digital", "clean"] },
+    ];
+    const result = selectDistinct(
+      groupedCandidates,
+      1,
+      ["digital", "editorial"],
+      true,
+      () => 0.55,
+    );
+    expect(result.map(({ value }) => value)).toEqual(["Mixed group"]);
   });
 
   it("uses earlier selections as compatibility tags within the same batch", () => {
@@ -46,6 +76,24 @@ describe("selectDistinct", () => {
     generatorConfig.compatibilityTagWeight = Number.MAX_VALUE;
     const result = selectDistinct(candidates, 1, ["clean", "digital"], true, () => 0.1);
     expect(result.map(({ value }) => value)).toEqual(["Clean"]);
+  });
+
+  it("penalizes contradictory candidates without banning them", () => {
+    generatorConfig.compatibilityContradictionPenalty = 0.5;
+    const contradictionCandidates: CatalogItem[] = [
+      { value: "Contradictory digital", tags: ["digital", "maximal"] },
+      { value: "Aligned digital", tags: ["digital", "clean"] },
+    ];
+
+    const result = selectDistinct(
+      contradictionCandidates,
+      1,
+      ["digital", "minimal"],
+      true,
+      () => 0.41,
+    );
+
+    expect(result.map(({ value }) => value)).toEqual(["Aligned digital"]);
   });
 
   it("rejects impossible selection counts", () => {

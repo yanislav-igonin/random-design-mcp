@@ -1,16 +1,16 @@
 export type GeneratorConfig = {
   compatibilityDefault: boolean;
   compatibilityTagWeight: number;
-  secondEraProbability: number;
-  secondStyleProbability: number;
+  compatibilityMatchedTagCap: number;
+  compatibilityContradictionPenalty: number;
   secondSignatureDetailProbability: number;
 };
 
 export const generatorConfig: GeneratorConfig = {
   compatibilityDefault: true,
   compatibilityTagWeight: 2,
-  secondEraProbability: 0.3,
-  secondStyleProbability: 0.25,
+  compatibilityMatchedTagCap: 2,
+  compatibilityContradictionPenalty: 0.5,
   secondSignatureDetailProbability: 0.3,
 };
 
@@ -23,11 +23,23 @@ export function validateGeneratorConfig(config: GeneratorConfig): void {
       "Generator config compatibilityTagWeight must be a finite positive number",
     );
   }
-  for (const name of [
-    "secondEraProbability",
-    "secondStyleProbability",
-    "secondSignatureDetailProbability",
-  ] as const) {
+  if (
+    !Number.isInteger(config.compatibilityMatchedTagCap) ||
+    config.compatibilityMatchedTagCap < 1
+  ) {
+    throw new Error(
+      "Generator config compatibilityMatchedTagCap must be a positive integer",
+    );
+  }
+  if (
+    !Number.isFinite(config.compatibilityContradictionPenalty) ||
+    config.compatibilityContradictionPenalty < 0
+  ) {
+    throw new Error(
+      "Generator config compatibilityContradictionPenalty must be a finite non-negative number",
+    );
+  }
+  for (const name of ["secondSignatureDetailProbability"] as const) {
     const probability = config[name];
     if (!Number.isFinite(probability) || probability < 0 || probability > 1) {
       throw new Error(`Generator config ${name} must be between 0 and 1`);

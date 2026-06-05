@@ -8,6 +8,18 @@ type GeneratorOptions = {
   random?: RandomSource;
 };
 
+export function selectRiskBalancedAntiPatterns(
+  catalog: readonly CatalogItem[],
+  activeTags: readonly DesignTag[],
+  compatibility: boolean,
+  random: RandomSource = defaultRandom,
+): CatalogItem[] {
+  const [relevantRisk] = selectDistinct(catalog, 1, activeTags, compatibility, random);
+  const remaining = catalog.filter((candidate) => candidate !== relevantRisk);
+  const [neutralRisk] = selectDistinct(remaining, 1, [], false, random);
+  return [relevantRisk, neutralRisk];
+}
+
 export function generateDesignProfile({
   compatibility = generatorConfig.compatibilityDefault,
   random = defaultRandom,
@@ -25,26 +37,46 @@ export function generateDesignProfile({
   const value = (category: keyof typeof catalogs): string => select(category)[0].value;
   const optionalCount = (probability: number): number => random() < probability ? 2 : 1;
 
+  const era = values(select("era"));
+  const style = values(select("style"));
+  const mood = value("mood");
+  const palette = value("palette");
+  const typography = value("typography");
+  const shapeLanguage = value("shapeLanguage");
+  const texture = value("texture");
+  const density = value("density");
+  const layout = value("layout");
+  const imagery = value("imagery");
+  const motion = value("motion");
+  const tone = value("tone");
+  const contrast = value("contrast");
+  const borderTreatment = value("borderTreatment");
+  const lighting = value("lighting");
+  const material = value("material");
+  const signatureDetail = values(
+    select("signatureDetail", optionalCount(generatorConfig.secondSignatureDetailProbability)),
+  );
+
   return {
-    era: values(select("era", optionalCount(generatorConfig.secondEraProbability))),
-    style: values(select("style", optionalCount(generatorConfig.secondStyleProbability))),
-    mood: value("mood"),
-    palette: value("palette"),
-    typography: value("typography"),
-    shapeLanguage: value("shapeLanguage"),
-    texture: value("texture"),
-    density: value("density"),
-    layout: value("layout"),
-    imagery: value("imagery"),
-    motion: value("motion"),
-    tone: value("tone"),
-    contrast: value("contrast"),
-    borderTreatment: value("borderTreatment"),
-    lighting: value("lighting"),
-    material: value("material"),
-    signatureDetail: values(
-      select("signatureDetail", optionalCount(generatorConfig.secondSignatureDetailProbability)),
+    era,
+    style,
+    mood,
+    palette,
+    typography,
+    shapeLanguage,
+    texture,
+    density,
+    layout,
+    imagery,
+    motion,
+    tone,
+    contrast,
+    borderTreatment,
+    lighting,
+    material,
+    signatureDetail,
+    antiPattern: values(
+      selectRiskBalancedAntiPatterns(catalogs.antiPattern, activeTags, compatibility, random),
     ),
-    antiPattern: values(select("antiPattern", 2)),
   };
 }
